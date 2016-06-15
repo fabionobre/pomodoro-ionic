@@ -1,0 +1,29 @@
+<ion-view view-title="Add new task">
+  <ion-content>
+
+    <form ng-submit="save(task)">
+
+      <div class="list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Title</span>
+          <input type="text" placeholder="Task" ng-model="task.title">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Description</span>
+          <input type="text" placeholder="Just another task" ng-model="task.description">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Pomodoros</span>
+          <input type="number" placeholder="1" ng-model="task.qnt_pomodoro">
+        </label>
+      </div>
+
+      <div class="padding">
+        <button class="button button-small button-block button-stable padding" type="submit">Create task</button>
+      </div>
+
+    </form>
+
+  </ion-content>
+</ion-view>
+

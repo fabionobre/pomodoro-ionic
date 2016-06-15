@@ -1,6 +1,31 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('TaskCtrl', function($scope, $state, Tasks) {
+
+  $scope.tasks = Tasks.all();
+  $scope.remove = function(task) {
+    Tasks.remove(task);
+  };
+  $scope.add = function() {
+    $state.go('tab.add'); 
+  };
+
+  $scope.show = function(taskId) {
+    $state.go('tab.show'); 
+  };
+
+  $scope.save = function(task) {
+    Tasks.add(task);
+    $state.go('tab.dash'); 
+  }
+})
+
+.controller('TaskShowCtrl', function($scope, $stateParams, Tasks) {
+
+console.log($stateParams.taskId);
+  $scope.task = Tasks.get($stateParams.taskId);
+
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
@@ -15,6 +40,10 @@ angular.module('starter.controllers', [])
   $scope.remove = function(chat) {
     Chats.remove(chat);
   };
+
+  $scope.activateDelete = function() {
+    console.log('ok');
+  }
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {

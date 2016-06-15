@@ -1,0 +1,25 @@
+<ion-view view-title="Pomodoro">
+  
+  <ion-nav-buttons side="secondary">
+    <button class="button ion-plus-round" ng-click="add()"></button>
+  </ion-nav-buttons>
+
+  <ion-content>
+
+    <div class="list">
+      <a class="item card padding" ng-repeat="task in tasks" href="#/tab/show/{{task.id}}" >
+
+          <div style="float:left; width: 20%; border-radius: 50%; font-size:2em; text-align: center; margin-top: 5px;">
+            {{task.qnt_pomodoro}}
+            <b style="font-size:.25em; display: block; margin-top: 5px;">pomodoro{{task.qnt_pomodoro > 1 ? 's' : ''}}</b>
+          </div>
+          <div style="float:right; margin-left: 15px; width: 72%;">
+            <h2>{{task.title}}</h2>
+            <p>{{task.description}}</p>            
+          </div>
+      </a>
+    </div>
+
+  </ion-content>
+</ion-view>
+

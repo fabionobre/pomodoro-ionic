@@ -23,7 +23,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+ 
+  $ionicConfigProvider.tabs.position('bottom'); 
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -43,19 +45,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   .state('tab.dash', {
     url: '/dash',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'task-dash': {
+        templateUrl: 'templates/task-dash.html',
+        controller: 'TaskCtrl'
       }
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
+  // Each tab has its own nav history stack:
+
+  .state('tab.add', {
+    url: '/add',
+    views: {
+      'task-dash': {
+        templateUrl: 'templates/task-add.html',
+        controller: 'TaskCtrl'
+      }
+    }
+  })
+
+  .state('tab.show', {
+      url: '/show/:taskId',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+        'task-dash': {
+          templateUrl: 'templates/task-show.html',
+          controller: 'TaskShowCtrl'
         }
       }
     })
