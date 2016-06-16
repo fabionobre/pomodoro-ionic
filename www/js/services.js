@@ -1,26 +1,15 @@
 angular.module('starter.services', [])
 
 .factory('Tasks', function() {
-  // Might use a resource here that returns a JSON array
-  console.log("opa");
+
   var tasks = [];
 
   if(typeof(Storage) != "undefined") {
-
     if (JSON.parse(localStorage.getItem("listOfTasks")) != null) {
-      
       tasks = JSON.parse(localStorage.getItem("listOfTasks"));
-
-    } else {
-
-      tasks = [];
-
-    }
-
+    } 
   } else {
-    
     console.log("Sorry, your browser does not support Web Storage...");
-    
   }
 
   return {
@@ -53,6 +42,12 @@ angular.module('starter.services', [])
       tasks.push(task);
       this.save();
     },
+    change: function(task) {
+
+      task_saved = this.get(task.id);
+      task_saved = task;
+      this.save();
+    },    
     save: function() {
       localStorage.setItem("listOfTasks", angular.toJson(tasks));
     }

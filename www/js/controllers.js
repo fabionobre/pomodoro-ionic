@@ -3,9 +3,7 @@ angular.module('starter.controllers', [])
 .controller('TaskCtrl', function($scope, $state, Tasks, $ionicActionSheet) {
 
   $scope.tasks = Tasks.all();
-  $scope.remove = function(task) {
-    Tasks.remove(task);
-  };
+
   $scope.add = function() {
     $state.go('tab.add'); 
   };
@@ -48,6 +46,16 @@ angular.module('starter.controllers', [])
 
 .controller('TaskShowCtrl', function($scope, $stateParams, Tasks) {
   $scope.task = Tasks.get($stateParams.taskId);
+})
+
+.controller('TaskEditCtrl', function($scope, $stateParams, Tasks, $state) {
+
+  $scope.task = Tasks.get($stateParams.taskId);
+
+  $scope.save = function(task) {
+    Tasks.change(task);
+    $state.go('tab.dash'); 
+  }
 })
 
 .controller('SettingsCtrl', function($scope, Settings, $ionicPopup) {

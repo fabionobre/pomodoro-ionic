@@ -65,16 +65,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
   .state('tab.show', {
-      url: '/show/:taskId',
-      views: {
-        'task-dash': {
-          templateUrl: 'templates/task-show.html',
-          controller: 'TaskShowCtrl'
-        }
+    url: '/show/:taskId',
+    views: {
+      'task-dash': {
+        templateUrl: 'templates/task-show.html',
+        controller: 'TaskShowCtrl'
       }
-    })
+    }
+  })
 
-   .state('tab.settings', {
+  .state('tab.edit', {
+    url: '/edit/:taskId',
+    views: {
+      'task-dash': {
+        templateUrl: 'templates/task-add.html',
+        controller: 'TaskEditCtrl'
+      }
+    }
+  })
+
+  .state('tab.settings', {
     url: '/settings',
     views: {
       'tab-settings': {
