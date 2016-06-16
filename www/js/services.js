@@ -57,4 +57,31 @@ angular.module('starter.services', [])
       localStorage.setItem("listOfTasks", angular.toJson(tasks));
     }
   };
+})
+
+.factory('Settings', function() {
+
+  var settings = {'short_break': 5, 'long_break': 30};
+
+  if(typeof(Storage) != "undefined") {
+
+    if (JSON.parse(localStorage.getItem("settings")) != null) {
+      settings = JSON.parse(localStorage.getItem("settings"));
+    }
+
+  } else {
+    
+    console.log("Sorry, your browser does not support Web Storage...");
+    
+  }
+
+  return {
+    all: function() {
+      return settings;
+    },
+    save: function(settings) {
+      this.settings = settings;
+      localStorage.setItem("settings", angular.toJson(settings));
+    }
+  };
 });

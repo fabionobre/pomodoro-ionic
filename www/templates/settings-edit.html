@@ -1,0 +1,26 @@
+<ion-view view-title="Settings">
+  <ion-content>
+
+    <form ng-submit="save(settings)">
+
+      <div class="list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Short break at (3 to 5 minutes)</span>
+
+          <input type="number" placeholder="Task" ng-model="settings.short_break">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Longer break at (15 to 30 minutes)</span>
+          <input type="number" placeholder="Just another task" ng-model="settings.long_break">
+        </label>
+      </div>
+
+      <div class="padding">
+        <button class="button button-small button-block button-stable padding" type="submit">Save settings</button>
+      </div>
+
+    </form>
+
+  </ion-content>
+</ion-view>
+

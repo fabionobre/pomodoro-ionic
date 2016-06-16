@@ -27,6 +27,21 @@ console.log($stateParams.taskId);
 
 })
 
+.controller('SettingsCtrl', function($scope, Settings, $ionicPopup) {
+  $scope.settings = Settings.all();
+  $scope.save = function(settings) {
+    Settings.save(settings);
+    $scope.showAlert();
+  }  
+
+  $scope.showAlert = function() {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Success',
+      template: 'Settings saved with success'
+    });
+  };
+})
+
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
