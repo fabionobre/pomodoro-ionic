@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('TaskCtrl', function($scope, $state, Tasks) {
+.controller('TaskCtrl', function($scope, $state, Tasks, $ionicActionSheet) {
 
   $scope.tasks = Tasks.all();
   $scope.remove = function(task) {
@@ -18,13 +18,36 @@ angular.module('starter.controllers', [])
     Tasks.add(task);
     $state.go('tab.dash'); 
   }
+
+  $scope.onHold = function(task) {
+
+   var hideSheet = $ionicActionSheet.show({
+     buttons: [
+       { text: 'Edit' }
+     ],
+     destructiveText: 'Delete',
+     cancelText: 'Cancel',
+     cancel: function() {
+         
+        },
+     buttonClicked: function(index) {
+
+        if (index == 0) {
+          $state.go('tab.edit', { taskId: task.id }); 
+        }
+        return true;
+     },
+     destructiveButtonClicked: function() {
+        Tasks.remove(task);
+        $scope.tasks = Tasks.all(); 
+        return true;
+     }
+   });
+  }   
 })
 
 .controller('TaskShowCtrl', function($scope, $stateParams, Tasks) {
-
-console.log($stateParams.taskId);
   $scope.task = Tasks.get($stateParams.taskId);
-
 })
 
 .controller('SettingsCtrl', function($scope, Settings, $ionicPopup) {

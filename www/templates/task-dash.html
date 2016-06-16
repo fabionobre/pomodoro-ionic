@@ -7,13 +7,13 @@
   <ion-content>
 
     <div class="list">
-      <a class="item card padding" ng-repeat="task in tasks" href="#/tab/show/{{task.id}}" >
+      <a class="item card padding" ng-repeat="task in tasks" href="#/tab/show/{{task.id}}" on-hold="onHold(task)">
 
           <div style="float:left; width: 20%; border-radius: 50%; font-size:2em; text-align: center; margin-top: 5px;">
             {{task.qnt_pomodoro}}
             <b style="font-size:.25em; display: block; margin-top: 5px;">pomodoro{{task.qnt_pomodoro > 1 ? 's' : ''}}</b>
           </div>
-          <div style="float:right; margin-left: 15px; width: 72%;">
+          <div style="float:left; margin-left: 15px;">
             <h2>{{task.title}}</h2>
             <p>{{task.description}}</p>            
           </div>
