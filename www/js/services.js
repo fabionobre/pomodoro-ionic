@@ -56,19 +56,7 @@ angular.module('starter.services', [])
 
 .factory('Settings', function() {
 
-  var settings = {'short_break': 5, 'long_break': 30};
-
-  if(typeof(Storage) != "undefined") {
-
-    if (JSON.parse(localStorage.getItem("settings")) != null) {
-      settings = JSON.parse(localStorage.getItem("settings"));
-    }
-
-  } else {
-    
-    console.log("Sorry, your browser does not support Web Storage...");
-    
-  }
+  var settings = loadLocalSorange("settings") || {'short_break': 5, 'long_break': 30};;
 
   return {
     all: function() {
@@ -79,4 +67,40 @@ angular.module('starter.services', [])
       localStorage.setItem("settings", angular.toJson(settings));
     }
   };
+})
+
+.factory('Timer', function() {
+
+  var task = loadLocalSorange("actualTask");
+  var qnt_short_break = 0;
+
+  return {
+    getTask: function() {
+      return task;
+    },
+    finish: function() {
+      timer = null;
+      task = null;
+      qnt_short_break = 0;
+      this.save();
+    },
+    start: function(newTask) {
+      task = newTask;
+      this.save();
+    },
+    save: function() {
+      localStorage.setItem("actualTask", angular.toJson(task));
+    }
+  };
 });
+
+function loadLocalSorange(data) {
+
+  if(typeof(Storage) != "undefined") {
+    if (localStorage.getItem(data) != null && localStorage.getItem(data) != "undefined") {
+      return JSON.parse(localStorage.getItem(data));
+    }
+  } else {
+    console.log("Sorry, your browser does not support Web Storage...");
+  }
+}

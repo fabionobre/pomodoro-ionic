@@ -34,7 +34,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
@@ -94,12 +94,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
    
-  .state('tab.chat-detail', {
-    url: '/chats/:chatId',
+  .state('tab.timer', {
+    url: '/timer',
     views: {
-      'tab-chats': {
-        templateUrl: 'templates/chat-detail.html',
-        controller: 'ChatDetailCtrl'
+      'tab-timer': {
+        templateUrl: 'templates/timer-show.html',
+        controller: 'TimerCtrl'
       }
     }
   })

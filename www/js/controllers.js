@@ -44,8 +44,19 @@ angular.module('starter.controllers', [])
   }   
 })
 
-.controller('TaskShowCtrl', function($scope, $stateParams, Tasks) {
+.controller('TaskShowCtrl', function($scope, $stateParams, Tasks, Timer, $state) {
+  
   $scope.task = Tasks.get($stateParams.taskId);
+
+  $scope.remove = function() {
+    Tasks.remove($scope.task);
+    $state.go('tab.dash'); 
+  }
+
+  $scope.start = function() {
+    Timer.start($scope.task);
+    $state.go('tab.timer', { taskId: $scope.task.id }); 
+  }
 })
 
 .controller('TaskEditCtrl', function($scope, $stateParams, Tasks, $state) {
@@ -71,6 +82,48 @@ angular.module('starter.controllers', [])
       template: 'Settings saved with success'
     });
   };
+})
+
+.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, $timeout) {
+
+  var timer = null;
+  $scope.counter = 0;
+  $scope.task = Timer.getTask();
+
+  if ($scope.task != null && timer == null) {
+    $scope.counter = 25*60;
+    timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
+  }
+  
+  $scope.onTimeout = function() {
+
+    if ($scope.counter ===  0) {
+      $scope.$broadcast('timer-stopped', 0);
+      $timeout.cancel(timer);
+      return;
+    }
+    $scope.counter--;
+    timer = $timeout(function() { $scope.onTimeout();}, 1000);
+    console.log($scope.counter);
+  };
+
+  $scope.stopTimer = function() {
+    $scope.$broadcast('timer-stopped', $scope.counter);
+    // $scope.counter = 90;
+    // $timeout.cancel(timer);
+  };
+
+  $scope.$on('timer-stopped', function(event, remaining) {
+    if(remaining === 0) {
+        console.log('your time ran out!');
+    }
+  });
+
+  $scope.finish = function() {
+    Timer.finish();
+    $timeout.cancel(timer);
+    $scope.task = null;
+  }  
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

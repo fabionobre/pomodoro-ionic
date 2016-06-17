@@ -1,0 +1,19 @@
+<ion-view view-title="Timer" cache-view="false">
+  <ion-content class="padding">
+
+    <ion-list ng-show="task != null">
+      <div class="padding">
+        <h2>{{task.title}}</h2>
+        <p>{{task.description}}</p>  
+
+        <p><b>{{task.qnt_pomodoro}} pomodoro{{task.qnt_pomodoro > 1 ? 's' : ''}}</b></p>
+
+        <div class="button-bar padding">
+          <a class="button button-stable button-outline" ng-click="finish()">Finish</a>
+        </div>
+
+      </div>
+    </ion-list>
+
+  </ion-content>
+</ion-view>
