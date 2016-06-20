@@ -84,27 +84,52 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, $timeout) {
+.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, $timeout, $cordovaNativeAudio, $state, $ionicPlatform) {
 
   var timer = null;
+  var in_a_break = false;
+
   $scope.counter = 0;
   $scope.task = Timer.getTask();
+  $scope.timeLeftString = "25:00";
+
+  var audio = new Audio('audio/alarm.mp3');
 
   if ($scope.task != null && timer == null) {
     $scope.counter = 25*60;
+    $scope.counter = 1;
     timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
   }
   
   $scope.onTimeout = function() {
 
     if ($scope.counter ===  0) {
-      $scope.$broadcast('timer-stopped', 0);
-      $timeout.cancel(timer);
+
+      if (Timer.getQntPomodoro() > 0) {
+        if (in_a_break) {
+          $scope.counter = 10;   
+          Timer.setQntPomodoro(Timer.getQntPomodoro() - 1);
+        } else {
+          if (Timer.getQntShortBreak() <= 4) {
+            Timer.setQntShortBreak(Timer.getQntShortBreak() + 1);
+            $scope.counter = 5;   
+          } else {
+            Timer.getQntShortBreak(0);
+            $scope.counter = 6;   
+          }
+        }
+
+        in_a_break = !in_a_break;
+        timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
+      } else {
+        $scope.$broadcast('timer-stopped', 0);
+        $timeout.cancel(timer);
+      }
       return;
     }
     $scope.counter--;
     timer = $timeout(function() { $scope.onTimeout();}, 1000);
-    console.log($scope.counter);
+    $scope.timeLeftString = dateToString($scope.counter);
   };
 
   $scope.stopTimer = function() {
@@ -114,8 +139,10 @@ angular.module('starter.controllers', [])
   };
 
   $scope.$on('timer-stopped', function(event, remaining) {
+   
     if(remaining === 0) {
-        console.log('your time ran out!');
+      $state.go('tab.timer'); 
+      // audio.play();    
     }
   });
 
@@ -154,3 +181,13 @@ angular.module('starter.controllers', [])
     enableFriends: true
   };
 });
+
+function dateToString(timeLeft) {
+  var minutes = Math.floor(timeLeft / 60);
+  var seconds = timeLeft - minutes * 60;
+  return str_pad_left(minutes,'0',2) + ":" + str_pad_left(seconds,'0',2);
+}
+
+function str_pad_left(string,pad,length) { 
+  return (new Array(length+1).join(pad)+string).slice(-length); 
+}

@@ -1,8 +1,13 @@
-<ion-view view-title="Timer" cache-view="false">
+<ion-view view-title="Timer">
   <ion-content class="padding">
 
     <ion-list ng-show="task != null">
       <div class="padding">
+
+        <div class="timer {{counter <= 0 ? 'timerEnded' : ''}}">
+          <h1>{{timeLeftString}}</h1>
+        </div>
+
         <h2>{{task.title}}</h2>
         <p>{{task.description}}</p>  
 

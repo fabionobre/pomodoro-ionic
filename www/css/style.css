@@ -1,4 +1,12 @@
-/* Empty. Add your own CSS if you like */
-.bar-stable {
-	/*background-color: #EEE !important;*/
+.timer {
+	text-align: center;
 }
+
+.timer h1 {
+	font-size: 4em;
+}
+
+.timerEnded {
+  animation: blinker 1s cubic-bezier(.5, 0, .5, .5) infinite alternate;  
+}
+@keyframes blinker { to { opacity: 0; } }
