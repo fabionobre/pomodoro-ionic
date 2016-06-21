@@ -84,7 +84,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, $timeout, $cordovaNativeAudio, $state, $ionicPlatform) {
+.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, $timeout, $state) {
 
   var timer = null;
   var in_a_break = false;
@@ -105,17 +105,20 @@ angular.module('starter.controllers', [])
 
     if ($scope.counter ===  0) {
 
+      console.log(Timer.getQntPomodoro());
+      console.log(Timer.getQntShortBreak());
+
       if (Timer.getQntPomodoro() > 0) {
         if (in_a_break) {
           $scope.counter = 10;   
           Timer.setQntPomodoro(Timer.getQntPomodoro() - 1);
         } else {
-          if (Timer.getQntShortBreak() <= 4) {
+          if (Timer.getQntShortBreak() < 4) {
             Timer.setQntShortBreak(Timer.getQntShortBreak() + 1);
             $scope.counter = 5;   
           } else {
             Timer.getQntShortBreak(0);
-            $scope.counter = 6;   
+            $scope.counter = 7;   
           }
         }
 
