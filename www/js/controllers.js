@@ -84,7 +84,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, $timeout, $state) {
+.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, Settings, $timeout, $state) {
 
   var timer = null;
   var in_a_break = false;
@@ -94,7 +94,8 @@ angular.module('starter.controllers', [])
 
   if (Timer.getTask() != null && timer == null) {
     $scope.task = Timer.getTask();
-    $scope.counter = Timer.getCounter() || getNextCounter();
+    Timer.setCounter(Timer.getCounter() || getNextCounter());
+    $scope.counter = Timer.getCounter();
     timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
   }
   
@@ -142,10 +143,10 @@ angular.module('starter.controllers', [])
 
     in_a_break = !in_a_break;
 
-    if (in_a_break) {
+    if (in_a_break) {  
       
-      console.log('start pomodoro');
       Timer.setQntPomodoro(Timer.getQntPomodoro() - 1);
+      console.log('start pomodoro ' + Timer.getQntPomodoro());
       return Settings.all().work_time;   
 
     } else {

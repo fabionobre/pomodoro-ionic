@@ -66,8 +66,8 @@ angular.module('starter.services', [])
 
   var task = loadLocalSorange("actualTask");
   var qnt_short_break = 0;
-  var qnt_pomodoro = task.qnt_pomodoro;
   var counter = Settings.all().work_time;
+  var qnt_pomodoro = null;
 
   return {
     getTask: function() {
@@ -80,6 +80,11 @@ angular.module('starter.services', [])
       qnt_short_break = amount; 
     },
     getQntPomodoro: function() {
+
+      if (qnt_pomodoro == null) {
+        qnt_pomodoro = task.qnt_pomodoro;
+      }
+
       return qnt_pomodoro; 
     },
     setQntPomodoro: function(amount) {
@@ -103,7 +108,7 @@ angular.module('starter.services', [])
       task = newTask;
       qnt_short_break = 0;
       qnt_pomodoro = task.qnt_pomodoro;
-      counter = Settings.all().work_time;
+      counter = null;
       this.save();
     },
     save: function() {

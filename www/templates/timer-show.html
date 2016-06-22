@@ -4,7 +4,7 @@
     <ion-list ng-show="task != null">
       <div class="padding timer_div">
 
-        <div class="timer {{counter <= 0 ? 'timerEnded' : ''}}">
+        <div class="timer {{$scope.timeLeftString == '00:00' ? 'timerEnded' : ''}}">
           <h1>{{timeLeftString}}</h1>
         </div>
 
