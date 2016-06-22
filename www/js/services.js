@@ -2,15 +2,7 @@ angular.module('starter.services', [])
 
 .factory('Tasks', function() {
 
-  var tasks = [];
-
-  if(typeof(Storage) != "undefined") {
-    if (JSON.parse(localStorage.getItem("listOfTasks")) != null) {
-      tasks = JSON.parse(localStorage.getItem("listOfTasks"));
-    } 
-  } else {
-    console.log("Sorry, your browser does not support Web Storage...");
-  }
+  var tasks = loadLocalSorange("listOfTasks") || [];
 
   return {
     all: function() {
@@ -56,9 +48,10 @@ angular.module('starter.services', [])
 
 .factory('Settings', function() {
 
-  var settings = loadLocalSorange("settings") || {'short_break': 5, 'long_break': 30};;
+  var settings = loadLocalSorange("settings") || {'short_break': 5, 'long_break': 30};
+  settings.work_time = 25;
 
-  return {
+  return { 
     all: function() {
       return settings;
     },
@@ -69,11 +62,12 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('Timer', function() {
+.factory('Timer', function(Settings) {
 
   var task = loadLocalSorange("actualTask");
   var qnt_short_break = 0;
   var qnt_pomodoro = task.qnt_pomodoro;
+  var counter = Settings.all().work_time;
 
   return {
     getTask: function() {
@@ -90,7 +84,15 @@ angular.module('starter.services', [])
     },
     setQntPomodoro: function(amount) {
       qnt_pomodoro = amount; 
-    },    
+    },  
+    
+    getCounter: function() {
+      return counter; 
+    },
+    setCounter: function(parameter) {
+      counter = parameter; 
+    },  
+
     finish: function() {
       timer = null;
       task = null;
@@ -101,6 +103,7 @@ angular.module('starter.services', [])
       task = newTask;
       qnt_short_break = 0;
       qnt_pomodoro = task.qnt_pomodoro;
+      counter = Settings.all().work_time;
       this.save();
     },
     save: function() {

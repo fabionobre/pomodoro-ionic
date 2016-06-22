@@ -10,3 +10,7 @@
   animation: blinker 1s cubic-bezier(.5, 0, .5, .5) infinite alternate;  
 }
 @keyframes blinker { to { opacity: 0; } }
+
+.timer_div h2 {
+	font-size: 1.4em;
+}

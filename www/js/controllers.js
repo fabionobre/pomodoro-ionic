@@ -88,57 +88,36 @@ angular.module('starter.controllers', [])
 
   var timer = null;
   var in_a_break = false;
-
-  $scope.counter = 0;
-  $scope.task = Timer.getTask();
-  $scope.timeLeftString = "25:00";
+  $scope.timeLeftString = dateToString(Timer.getCounter());
 
   var audio = new Audio('audio/alarm.mp3');
 
-  if ($scope.task != null && timer == null) {
-    $scope.counter = 25*60;
-    $scope.counter = 1;
+  if (Timer.getTask() != null && timer == null) {
+    $scope.task = Timer.getTask();
+    $scope.counter = Timer.getCounter() || getNextCounter();
     timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
   }
   
   $scope.onTimeout = function() {
 
-    if ($scope.counter ===  0) {
+    if (Timer.getCounter() ===  0) {
 
-      console.log(Timer.getQntPomodoro());
-      console.log(Timer.getQntShortBreak());
+      if (hasPomodoro()) {
 
-      if (Timer.getQntPomodoro() > 0) {
-        if (in_a_break) {
-          $scope.counter = 10;   
-          Timer.setQntPomodoro(Timer.getQntPomodoro() - 1);
-        } else {
-          if (Timer.getQntShortBreak() < 4) {
-            Timer.setQntShortBreak(Timer.getQntShortBreak() + 1);
-            $scope.counter = 5;   
-          } else {
-            Timer.getQntShortBreak(0);
-            $scope.counter = 7;   
-          }
-        }
+        Timer.setCounter(getNextCounter());
+        timer = $timeout(function() { $scope.onTimeout(); }, 1000); 
 
-        in_a_break = !in_a_break;
-        timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
       } else {
+
         $scope.$broadcast('timer-stopped', 0);
         $timeout.cancel(timer);
       }
       return;
     }
-    $scope.counter--;
-    timer = $timeout(function() { $scope.onTimeout();}, 1000);
-    $scope.timeLeftString = dateToString($scope.counter);
-  };
 
-  $scope.stopTimer = function() {
-    $scope.$broadcast('timer-stopped', $scope.counter);
-    // $scope.counter = 90;
-    // $timeout.cancel(timer);
+    Timer.setCounter(Timer.getCounter() - 1);
+    timer = $timeout(function() { $scope.onTimeout();}, 1000);
+    $scope.timeLeftString = dateToString(Timer.getCounter());
   };
 
   $scope.$on('timer-stopped', function(event, remaining) {
@@ -154,36 +133,38 @@ angular.module('starter.controllers', [])
     $timeout.cancel(timer);
     $scope.task = null;
   }  
-})
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+  function hasPomodoro() {
+    return Timer.getQntPomodoro() > 0;
+  }
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+  function getNextCounter() {
 
-  $scope.activateDelete = function() {
-    console.log('ok');
+    in_a_break = !in_a_break;
+
+    if (in_a_break) {
+      
+      console.log('start pomodoro');
+      Timer.setQntPomodoro(Timer.getQntPomodoro() - 1);
+      return Settings.all().work_time;   
+
+    } else {
+      
+      if (Timer.getQntShortBreak() < 3) {
+
+        console.log('start short break ' + Timer.getQntShortBreak());
+        Timer.setQntShortBreak(Timer.getQntShortBreak() + 1);
+        return Settings.all().short_break;   
+
+      } else {
+
+        console.log('start long break');
+        Timer.setQntShortBreak(0);
+        return Settings.all().long_break;   
+      }
+    }    
   }
 })
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
 
 function dateToString(timeLeft) {
   var minutes = Math.floor(timeLeft / 60);
