@@ -14,3 +14,8 @@
 .timer_div h2 {
 	font-size: 1.4em;
 }
+
+.input_error {
+	font-size: .7em !important;
+	color: #F00 !important;
+} 

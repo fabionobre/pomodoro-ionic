@@ -1,17 +1,18 @@
 <ion-view view-title="Settings">
   <ion-content>
 
-    <form ng-submit="save(settings)">
+    <form ng-submit="save(settings)" novalidate>
 
       <div class="list">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Short break at (3 to 5 minutes)</span>
-
           <input type="number" placeholder="Task" ng-model="settings.short_break">
+          <p ng-show="settings.short_break > 5 || settings.short_break < 3" class="input_error">* Short break value must be bettwen 3 and 5</p>
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Longer break at (15 to 30 minutes)</span>
           <input type="number" placeholder="Just another task" ng-model="settings.long_break">
+          <p ng-show="settings.long_break > 30 || settings.long_break < 15" class="input_error">* Long break value must be bettwen 3 and 5</p>
         </label>
       </div>
 

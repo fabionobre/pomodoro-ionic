@@ -42,6 +42,13 @@ angular.module('starter.services', [])
     },    
     save: function() {
       localStorage.setItem("listOfTasks", angular.toJson(tasks));
+    },
+    isValid: function(task) {
+      if (task.title == '' || task.title == null
+        || task.qnt_pomodoro <= 0) {
+        return false;
+      }
+      return true;
     }
   };
 })
