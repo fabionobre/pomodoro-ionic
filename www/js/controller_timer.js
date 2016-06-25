@@ -1,8 +1,8 @@
-controllers.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, Settings, $timeout, $state) {
+controllers.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, Settings, $timeout, $state, dateToStringFilter) {
 
   var timer = null;
   var in_a_break = false;
-  $scope.timeLeftString = dateToString(Timer.getCounter());
+  $scope.timeLeftString = dateToStringFilter(Timer.getCounter());
 
   var audio = new Audio('audio/alarm.mp3');
 
@@ -32,7 +32,7 @@ controllers.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks,
 
     Timer.setCounter(Timer.getCounter() - 1);
     timer = $timeout(function() { $scope.onTimeout();}, 1000);
-    $scope.timeLeftString = dateToString(Timer.getCounter());
+    $scope.timeLeftString = dateToStringFilter(Timer.getCounter());
   };
 
   $scope.$on('timer-stopped', function(event, remaining) {
@@ -80,13 +80,3 @@ controllers.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks,
     }    
   }
 })
-
-function dateToString(timeLeft) {
-  var minutes = Math.floor(timeLeft / 60);
-  var seconds = timeLeft - minutes * 60;
-  return str_pad_left(minutes,'0',2) + ":" + str_pad_left(seconds,'0',2);
-}
-
-function str_pad_left(string,pad,length) { 
-  return (new Array(length+1).join(pad)+string).slice(-length); 
-}
