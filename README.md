@@ -1,2 +1,4 @@
 # pomodoro-ionic
-An implementation of pomodoro timmer in Ionic.
+An implementation of pomodoro timer using Ionic.
+
+
