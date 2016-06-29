@@ -7,7 +7,7 @@
   <ion-content>
 
     <div class="list">
-      <a class="item card padding" ng-repeat="task in tasks" href="#/tab/show/{{task.id}}" on-hold="onHold(task)">
+      <a class="item card padding" style="{{task.finished ? 'background-color: #EEE;' : ''}}" ng-repeat="task in tasks" href="#/tab/show/{{task.id}}" on-hold="onHold(task)">
 
           <div style="float:left; width: 20%; border-radius: 50%; font-size:2em; text-align: center; margin-top: 5px;">
             {{task.qnt_pomodoro}}

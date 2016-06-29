@@ -1,4 +1,4 @@
-controllers.controller('SettingsCtrl', function($scope, Settings, $ionicPopup) {
+angular.module('starter.controllers').controller('SettingsCtrl', function($scope, Settings, $ionicPopup) {
   $scope.settings = Settings.all();
   $scope.save = function(settings) {
     Settings.save(settings);

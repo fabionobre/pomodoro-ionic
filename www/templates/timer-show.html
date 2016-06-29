@@ -13,7 +13,7 @@
 
         <p><b>{{task.qnt_pomodoro}} pomodoro{{task.qnt_pomodoro > 1 ? 's' : ''}}</b></p>
 
-        <div class="button-bar padding">
+        <div class="button-bar padding" ng-show="!task.finished">
           <a class="button button-stable button-outline" ng-click="finish()">Finish</a>
         </div>
 

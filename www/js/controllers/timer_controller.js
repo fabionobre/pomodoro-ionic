@@ -1,18 +1,24 @@
-controllers.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, Settings, $timeout, $state, dateToStringFilter) {
+angular.module('starter.controllers').controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks, Settings, $timeout, $state, dateToStringFilter) {
 
   var timer = null;
   var in_a_break = false;
-  $scope.timeLeftString = dateToStringFilter(Timer.getCounter());
-
   var audio = new Audio('audio/alarm.mp3');
 
   if (Timer.getTask() != null && timer == null) {
+
     $scope.task = Timer.getTask();
-    Timer.setCounter(Timer.getCounter() || getNextCounter());
     $scope.counter = Timer.getCounter();
-    timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
+    
+    if (Timer.getTask().finished) {
+      Timer.setCounter(0);
+    } else {
+      Timer.setCounter(Timer.getCounter() || getNextCounter());
+      timer = $timeout(function() { $scope.onTimeout(); }, 1000);    
+    }
   }
   
+  $scope.timeLeftString = dateToStringFilter(Timer.getCounter());
+
   $scope.onTimeout = function() {
 
     if (Timer.getCounter() ===  0) {
@@ -35,18 +41,31 @@ controllers.controller('TimerCtrl', function($scope, $stateParams, Timer, Tasks,
     $scope.timeLeftString = dateToStringFilter(Timer.getCounter());
   };
 
+// On finish
   $scope.$on('timer-stopped', function(event, remaining) {
    
     if(remaining === 0) {
       $state.go('tab.timer'); 
-      audio.play();    
+      audio.play();  
+      $scope.finish();
     }
   });
 
   $scope.finish = function() {
+
+    if (Timer == null || Timer.getTask() == null) {
+      return;
+    }
+
+    task = Timer.getTask();
+    task.finished = true;
+    Tasks.save(); 
+    
     Timer.finish();
     $timeout.cancel(timer);
-    $scope.task = null;
+    Timer.save(); 
+
+    $scope.timeLeftString = dateToStringFilter(0);
   }  
 
   function hasPomodoro() {

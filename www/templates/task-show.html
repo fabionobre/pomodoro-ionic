@@ -1,4 +1,4 @@
-<ion-view view-title="Task">
+<ion-view view-title="Task" cache-view="false">
   <ion-content>
 
     <ion-list>
@@ -11,7 +11,7 @@
     </div>
     </ion-list>
 
-  	<div class="button-bar padding">
+  	<div class="button-bar padding" ng-show="!task.finished && !blocked">
   	  <a class="button button-stable button-outline" ng-click="start(task)">Start</a>
   	  <a class="button button-stable button-outline" ng-click="remove(task)">Delete</a>
   	</div>

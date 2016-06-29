@@ -1,4 +1,4 @@
-controllers.controller('TaskCtrl', function($scope, $state, Tasks, $ionicActionSheet) {
+angular.module('starter.controllers').controller('TaskCtrl', function($scope, $state, Tasks, $ionicActionSheet) {
 
   $scope.tasks = Tasks.all();
   $scope.task = {};
@@ -45,9 +45,10 @@ controllers.controller('TaskCtrl', function($scope, $state, Tasks, $ionicActionS
   }   
 })
 
-controllers.controller('TaskShowCtrl', function($scope, $stateParams, Tasks, Timer, $state) {
+angular.module('starter.controllers').controller('TaskShowCtrl', function($scope, $stateParams, Tasks, Timer, $state) {
   
   $scope.task = Tasks.get($stateParams.taskId);
+  $scope.blocked = Timer.getTask() != null && !Timer.getTask().finished;
 
   $scope.remove = function() {
     Tasks.remove($scope.task);
@@ -58,9 +59,9 @@ controllers.controller('TaskShowCtrl', function($scope, $stateParams, Tasks, Tim
     Timer.start($scope.task);
     $state.go('tab.timer', { taskId: $scope.task.id }); 
   }
-})
+});
 
-.controller('TaskEditCtrl', function($scope, $stateParams, Tasks, $state) {
+angular.module('starter.controllers').controller('TaskEditCtrl', function($scope, $stateParams, Tasks, $state) {
 
   $scope.task = Tasks.get($stateParams.taskId);
 
