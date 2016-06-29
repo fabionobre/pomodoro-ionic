@@ -32,16 +32,19 @@ angular.module('starter.services').factory('Tasks', function() {
       tasks.push(task);
       this.save();
     },
-    change: function(task) {
-
-      task_saved = this.get(task.id);
-      task_saved = task;
+    update: function(task) {
+      var index = tasks.indexOf(this.get(task.id));
+      tasks.splice(index, 1, task);
       this.save();
     },    
     save: function() {
       localStorage.setItem("listOfTasks", angular.toJson(tasks));
     },
     isValid: function(task) {
+
+      task.title = task.title || "";
+      task.qnt_pomodoro = task.qnt_pomodoro || 0;
+
       if (task.title == '' || task.title == null
         || task.qnt_pomodoro <= 0) {
         return false;

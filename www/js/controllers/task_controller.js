@@ -63,11 +63,11 @@ angular.module('starter.controllers').controller('TaskShowCtrl', function($scope
 
 angular.module('starter.controllers').controller('TaskEditCtrl', function($scope, $stateParams, Tasks, $state) {
 
-  $scope.task = Tasks.get($stateParams.taskId);
+  $scope.task = angular.copy(Tasks.get($stateParams.taskId));
 
   $scope.save = function(task) {
     if (Tasks.isValid(task)) {
-      Tasks.change(task);
+      Tasks.update(task);
       $state.go('tab.dash'); 
     }
   }
